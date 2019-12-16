@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
+    private ImageView mSolvedImageView;
 
     private CrimeAdapter mAdapter;
 
@@ -38,7 +40,7 @@ CrimeListFragment to use this layout file and to find the RecyclerView in the la
 
 /*The next job is to define the ViewHolder that will inflate and own your layout. Define it as an inner
 class in CrimeListFragment .*/
-    private class CrimeHolder extends RecyclerView.ViewHolder {
+    private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     private TextView mTitleTextView;
     private TextView mDateTextView;
@@ -50,21 +52,29 @@ class in CrimeListFragment .*/
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.crimen_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.crimen_date);
-
+            mSolvedImageView= (ImageView) itemView.findViewById(R.id.crimen_solved);
         }
 
     public void bind(Crime crime) {
         mCrime = crime;
 
 
-        Toast.makeText(getContext(), mCrime.getTitle(), Toast.LENGTH_LONG).show();
-        Toast.makeText(getContext(), mCrime.getDate().toString(), Toast.LENGTH_LONG).show();
+       // Toast.makeText(getContext(), mCrime.getTitle(), Toast.LENGTH_LONG).show();
+
        mTitleTextView.setText(mCrime.getTitle());
         mDateTextView.setText(mCrime.getDate().toString());
+        mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
 
 
     }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getActivity(),
+                mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT)
+                .show();
     }
+}
 
 /*.
 CrimeHolder is all skin and bones right now. Later in the chapter, CrimeHolder will beef up as you
